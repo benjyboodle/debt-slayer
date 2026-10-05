@@ -1,46 +1,327 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#171717">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Debt Slayer">
-<link rel="manifest" href="manifest.json">
 <title>Debt Slayer</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#171717;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:720px;margin:auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}.top{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:9px;margin-bottom:14px}.stat{background:#fff;border:1px solid #ddd;border-radius:14px;padding:12px}.label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.05em}.value{font-size:22px;font-weight:800;margin-top:3px}.saved{color:#16803c}.xp{color:#a16207}h1{font-size:29px;margin:4px 0 16px}h2{font-size:20px;margin:20px 0 10px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.boss{background:#fff;border:1px solid #ddd;border-radius:16px;padding:15px;margin-bottom:12px}.bosshead{display:flex;align-items:center;gap:12px}.dragon{font-size:47px}.bossname{font-size:19px;font-weight:800}.type{font-size:12px;color:#666}.hp{display:flex;justify-content:space-between;font-weight:800;margin-top:12px}.bar{height:13px;background:#e9e9e9;border-radius:99px;overflow:hidden;margin:7px 0}.fill{height:100%;background:#b42318;transition:width .2s}.meta{display:flex;flex-wrap:wrap;gap:7px;color:#666;font-size:12px}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}button{min-height:44px;border:1px solid #ccc;border-radius:10px;background:#fff;padding:9px 13px;font-weight:700;font-size:14px}button:active{transform:translateY(1px)}.attack{background:#fff0ef;border-color:#e1a7a2}.auto{background:#eff8f2;border-color:#a7d1b5;color:#176b34}.winbox{background:#fffaf0;border:1px solid #e5d39c;border-radius:14px;padding:14px}.winbuttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.log{background:#fff;border:1px solid #ddd;border-radius:14px;overflow:hidden}.entry{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid #eee;font-size:13px}.entry:last-child{border:0}.amount{font-weight:800;white-space:nowrap}.damage{color:#16803c}.xpamt{color:#a16207}.note{font-size:12px;color:#666;line-height:1.45;margin-top:9px}.modalback{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10}.modal{background:#fff;border-radius:16px;padding:17px;width:min(520px,100%);max-height:90%;overflow:auto}.form{display:grid;gap:11px}.form label{font-size:13px;font-weight:700}.form input,.form select{width:100%;min-height:44px;border:1px solid #ccc;border-radius:9px;padding:9px;background:#fff;font-size:16px}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.check{display:flex;align-items:center;gap:8px}.check input{width:20px;height:20px}.modalactions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;margin-top:14px}.primary{background:#171717;color:#fff;border-color:#171717}.danger{color:#a11}.empty{text-align:center;color:#777;padding:18px}@media(max-width:500px){.top{grid-template-columns:1fr 1fr}.top .stat:first-child{grid-column:1/-1}.two{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f3f3;color:#171717;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:700px;margin:auto;padding:18px 14px 35px}
+h1{font-size:30px;margin:0 0 16px}
+h2{font-size:20px;margin:20px 0 10px}
+.stats{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}
+.stat,.boss,.wins,.log{background:white;border:1px solid #ddd;border-radius:15px}
+.stat{padding:12px}.label{font-size:11px;color:#666;text-transform:uppercase}.value{font-size:22px;font-weight:800;margin-top:3px}.green{color:#16803c}.gold{color:#a16207}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+button{min-height:44px;border:1px solid #ccc;border-radius:10px;background:white;padding:9px 13px;font-weight:700;font-size:14px}
+button:active{transform:scale(.98)}
+.boss{padding:15px;margin-bottom:11px}.head{display:flex;align-items:center;gap:12px}.dragon{font-size:46px}.name{font-size:19px;font-weight:800}.type{font-size:12px;color:#666}
+.hp{display:flex;justify-content:space-between;margin-top:12px;font-weight:800}.bar{height:13px;background:#e8e8e8;border-radius:20px;overflow:hidden;margin:7px 0}.fill{height:100%;background:#b42318}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#666}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}.attack{background:#fff0ef;border-color:#e0aaa5}.auto{background:#eef8f1;border-color:#a7d2b5;color:#176b34}
+.wins{padding:14px;background:#fffaf0;border-color:#e4d39c}.winbuttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.log{overflow:hidden}.entry{padding:10px 12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px;font-size:13px}.entry:last-child{border:0}.damage{color:#16803c;font-weight:800}.xp{color:#a16207;font-weight:800}
+.empty{padding:18px;text-align:center;color:#777}.note{font-size:12px;color:#666;line-height:1.45;margin-top:10px}
+#modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
+.dialog{background:#fff;border-radius:16px;padding:17px;width:min(510px,100%);max-height:90%;overflow:auto}
+.form{display:grid;gap:11px}.form label{font-size:13px;font-weight:700}.form input,.form select{width:100%;height:45px;border:1px solid #ccc;border-radius:9px;padding:8px;font-size:16px;background:white}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.modalbuttons{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end;margin-top:14px}.primary{background:#171717;color:#fff;border-color:#171717}.danger{color:#a00}
+@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}.stats .stat:first-child{grid-column:1/-1}.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<main id="app">
+<main>
 <h1>🐉 Debt Slayer</h1>
-<div class="top"><div class="stat"><div class="label">Money Kept</div><div id="saved" class="value saved">$0</div></div><div class="stat"><div class="label">XP</div><div id="xp" class="value xp">0</div></div><div class="stat"><div class="label">Attacks</div><div id="attacks" class="value">0</div></div></div>
-<div class="row"><h2 style="margin-top:0">Boss Battles</h2><button id="add">+ Add Boss</button></div>
+<div class="stats">
+<div class="stat"><div class="label">Money Kept</div><div id="saved" class="value green">$0</div></div>
+<div class="stat"><div class="label">XP</div><div id="xp" class="value gold">0</div></div>
+<div class="stat"><div class="label">Attacks</div><div id="attacks" class="value">0</div></div>
+</div>
+
+<div class="header"><h2>Boss Battles</h2><button id="addBoss">+ Add Boss</button></div>
 <div id="bosses"></div>
+
 <h2>Financial Wins</h2>
-<div class="winbox"><b>Good choices earn XP and can track money kept. They never reduce boss HP.</b><div class="winbuttons"><button data-win="wendys">Skipped Wendy's +150 XP</button><button data-win="cook">Cooked at home +200 XP</button><button data-win="avoid">Skipped purchase +100 XP</button><button data-win="budget">Under budget +250 XP</button><button id="customwin">Custom Win</button></div></div>
-<h2>Battle Log</h2><div id="log" class="log"></div>
-<div class="note">Your game data is stored on this device in your browser. Auto attacks are game records only and never move real money. The app catches up scheduled auto attacks when you open it.</div>
-<div id="modal"></div>
+<div class="wins">
+<b>Good choices earn XP. Money kept is tracked separately and never damages a boss.</b>
+<div class="winbuttons">
+<button data-win="wendys">Skipped Wendy's +150 XP</button>
+<button data-win="cook">Cooked at home +200 XP</button>
+<button data-win="avoid">Skipped purchase +100 XP</button>
+<button data-win="budget">Under budget +250 XP</button>
+<button id="customWin">Custom Win</button>
+</div>
+</div>
+
+<h2>Battle Log</h2>
+<div id="log" class="log"></div>
+<div class="note">Your game data stays on this device. Auto attacks are game records only and never move real money. Scheduled auto attacks are processed when you open the app.</div>
 </main>
+
+<div id="modal">
+<div class="dialog">
+<h2 id="modalTitle"></h2>
+<form id="bossForm" class="form">
+<label>Boss name<input id="name" required></label>
+<div class="two">
+<label>Type<select id="type"><option>Credit Card</option><option>Student Loan</option><option>Other Debt</option></select></label>
+<label>APR %<input id="apr" type="number" min="0" max="100" step="0.01"></label>
+</div>
+<div class="two">
+<label>Current balance<input id="balance" type="number" min="0" step="0.01"></label>
+<label>Original balance<input id="original" type="number" min="0.01" step="0.01"></label>
+</div>
+<label><input id="auto" type="checkbox"> Enable monthly auto attack</label>
+<div class="two">
+<label>Auto amount<input id="autoAmount" type="number" min="0" step="0.01"></label>
+<label>Due day<input id="autoDay" type="number" min="1" max="31" step="1"></label>
+</div>
+<div class="note">Changing the current balance is treated as a correction and resets the interest estimate clock.</div>
+<div class="modalbuttons">
+<button type="button" id="deleteBoss" class="danger">Delete Boss</button>
+<button type="button" id="cancel">Cancel</button>
+<button class="primary" type="submit">Save Boss</button>
+</div>
+</form>
+</div>
+</div>
+
 <script>
-(()=> {
-const KEY="debt-slayer-v1"; const $=s=>document.querySelector(s);
-let state;
-const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(Math.max(0,n));
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const uid=()=>Math.random().toString(36).slice(2,9);
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function log(text,amount="",kind=""){state.log.unshift({date:new Date().toLocaleString(),text,amount,kind});state.log=state.log.slice(0,80)}
-function daysBetween(a,b){return Math.floor((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000)}
-function today(){return new Date().toISOString().slice(0,10)}
-function applyInterest(){const now=today();state.debt.forEach(d=>{if(!d.lastInterest)d.lastInterest=now;let days=daysBetween(d.lastInterest,now);if(days>0&&d.balance>0&&d.apr>0){let interest=d.balance*(d.apr/100)*days/365;d.balance+=interest;log("Estimated interest on "+d.name,"+"+money(interest),"interest")}d.lastInterest=now})}
-function applyAuto(){const now=new Date();state.debt.forEach(d=>{if(!d.auto||d.autoAmount<=0||d.balance<=0)return;if(!d.lastAuto){d.lastAuto=today();return}let cursor=new Date(d.lastAuto+"T00:00:00");let safety=0;while(safety++<36){let y=cursor.getUTCFullYear(),m=cursor.getUTCMonth();let day=Math.min(d.autoDay,new Date(Date.UTC(y,m+1,0)).getUTCDate());let due=new Date(Date.UTC(y,m,day));if(due<=cursor){m++;if(m>11){m=0;y++}}day=Math.min(d.autoDay,new Date(Date.UTC(y,m+1,0)).getUTCDate());due=new Date(Date.UTC(y,m,day));if(due>now)break;let a=Math.min(d.autoAmount,d.balance);d.balance-=a;state.attacks++;log("AUTO ATTACK hit "+d.name,"−"+money(a),"damage");cursor=due;d.lastAuto=due.toISOString().slice(0,10)}})}
-function render(){save();$("#saved").textContent=money(state.saved);$("#xp").textContent=state.xp.toLocaleString();$("#attacks").textContent=state.attacks.toLocaleString();let box=$("#bosses");if(!state.debt.length)box.innerHTML='<div class="empty">No bosses yet. Add your first debt.</div>';else box.innerHTML=state.debt.map(d=>{let pct=d.original?Math.max(0,Math.min(100,d.balance/d.original*100)):0;let dead=d.balance<=0;return `<div class="boss"><div class="bosshead"><div class="dragon">🐉</div><div><div class="bossname">${esc(d.name)}</div><div class="type">${esc(d.type)} · ${Number(d.apr).toFixed(2)}% APR</div></div></div><div class="hp"><span>${dead?"DEFEATED":"Boss HP"}</span><span>${money(d.balance)}</span></div><div class="bar"><div class="fill" style="width:${pct}%"></div></div><div class="meta"><span>Original: ${money(d.original)}</span><span>Auto: ${d.auto?"On · "+money(d.autoAmount)+" day "+d.autoDay:"Off"}</span></div><div class="actions">${!dead?`<button class="attack" data-attack="100" data-id="${d.id}">Attack $100</button><button class="attack" data-attack="500" data-id="${d.id}">Attack $500</button><button class="attack" data-attack="custom" data-id="${d.id}">Custom Attack</button>`:""}${d.auto&&!dead?`<button class="auto" data-auto="${d.id}">Record Auto Attack</button>`:""}<button data-edit="${d.id}">Edit Boss</button></div></div>`}).join("");$("#log").innerHTML=state.log.length?state.log.map(x=>`<div class="entry"><span><b>${esc(x.text)}</b><br><small>${esc(x.date)}</small></span><span class="amount ${x.kind}">${esc(x.amount)}</span></div>`).join(""):'<div class="empty">No battles yet.</div>'}
-function attack(d,a,label){a=Math.max(0,Math.min(Number(a)||0,d.balance));if(!a)return;d.balance-=a;state.attacks++;log(label+" hit "+d.name,"−"+money(a),"damage");render()}
-function modal(d=null){let x=d||{id:uid(),name:"New Dragon",type:"Credit Card",balance:1000,original:1000,apr:24.99,auto:false,autoAmount:0,autoDay:1,lastInterest:today(),lastAuto:today()};$("#modal").innerHTML=`<div class="modalback"><form class="modal" id="form"><h2>${d?"Edit Boss":"Add Boss"}</h2><div class="form"><label>Name<input id="n" value="${esc(x.name)}" required></label><div class="two"><label>Type<select id="t"><option ${x.type==="Credit Card"?"selected":""}>Credit Card</option><option ${x.type==="Student Loan"?"selected":""}>Student Loan</option><option ${x.type==="Other Debt"?"selected":""}>Other Debt</option></select></label><label>APR %<input id="apr" type="number" min="0" max="100" step=".01" value="${x.apr}"></label></div><div class="two"><label>Current balance<input id="bal" type="number" min="0" step=".01" value="${x.balance}"></label><label>Original balance<input id="orig" type="number" min=".01" step=".01" value="${x.original}"></label></div><label class="check"><input id="auto" type="checkbox" ${x.auto?"checked":""}> Monthly auto attack</label><div class="two"><label>Auto amount<input id="aa" type="number" min="0" step=".01" value="${x.autoAmount}"></label><label>Due day<input id="day" type="number" min="1" max="31" value="${x.autoDay}"></label></div><div class="note">Changing the current balance is a correction and resets the interest estimate clock.</div></div><div class="modalactions">${d?'<button type="button" class="danger" id="del">Delete Boss</button>':""}<button type="button" id="cancel">Cancel</button><button class="primary">Save Boss</button></div></form></div>`;$("#cancel").onclick=()=>$("#modal").innerHTML="";if(d)$("#del").onclick=()=>{state.debt=state.debt.filter(q=>q.id!==d.id);$("#modal").innerHTML="";render()};$("#form").onsubmit=e=>{e.preventDefault();let bal=Math.max(0,Number($("#bal").value)||0),orig=Math.max(.01,Number($("#orig").value)||bal||.01);Object.assign(x,{name:$("#n").value.trim()||"Dragon",type:$("#t").value,apr:Math.max(0,Number($("#apr").value)||0),balance:bal,original:orig,auto:$("#auto").checked,autoAmount:Math.max(0,Number($("#aa").value)||0),autoDay:Math.max(1,Math.min(31,Number($("#day").value)||1)),lastInterest:today()});if(!d)state.debt.push(x);$("#modal").innerHTML="";render()}}
-$("#add").onclick=()=>modal();document.addEventListener("click",e=>{let b=e.target.closest("button");if(!b)return;if(b.dataset.edit){let d=state.debt.find(x=>x.id===b.dataset.edit);if(d)modal(d)}else if(b.dataset.attack){let d=state.debt.find(x=>x.id===b.dataset.id);let a=b.dataset.attack==="custom"?prompt("How much did you pay?","250"):b.dataset.attack;if(d)attack(d,a,"Payment")}else if(b.dataset.auto){let d=state.debt.find(x=>x.id===b.dataset.auto);if(d)attack(d,d.autoAmount,"AUTO ATTACK")}else if(b.dataset.win){let w={wendys:["Skipped Wendy's",150],cook:["Cooked at home",200],avoid:["Skipped an unnecessary purchase",100],budget:["Stayed under budget",250]}[b.dataset.win];state.xp+=w[1];log(w[0],"+"+w[1]+" XP","xpamt");render()}else if(b.id==="customwin"){let text=prompt("What did you do?");if(!text)return;let saved=Number(prompt("Money kept?","0"))||0,xp=Number(prompt("XP earned?","100"))||0;state.saved+=Math.max(0,saved);state.xp+=Math.max(0,xp);log(text,(saved?"+ "+money(saved)+" · ":"")+"+"+xp+" XP","xpamt");render()}});\ntry{state=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){state=null}if(!state)state={xp:0,saved:0,attacks:0,debt:[{id:uid(),name:"Credit Card Dragon",type:"Credit Card",balance:6000,original:6000,apr:24.99,auto:false,autoAmount:0,autoDay:1,lastInterest:today()},{id:uid(),name:"Student Loan Dragon",type:"Student Loan",balance:24000,original:24000,apr:6.75,auto:true,autoAmount:250,autoDay:15,lastInterest:today(),lastAuto:today()}],log:[]};applyInterest();applyAuto();render();\n})();
+(function(){
+"use strict";
+
+var KEY="debt-slayer-save-v2";
+var state=null;
+var editingId=null;
+
+function today(){
+  var d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function money(n){
+  return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(Math.max(0,Number(n)||0));
+}
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+}
+function addLog(text,amount,kind){
+  state.log.unshift({date:new Date().toLocaleString(),text:text,amount:amount||"",kind:kind||""});
+  state.log=state.log.slice(0,80);
+}
+function defaultState(){
+  return {
+    xp:0,saved:0,attacks:0,log:[],
+    debt:[
+      {id:uid(),name:"Credit Card Dragon",type:"Credit Card",balance:6000,original:6000,apr:24.99,auto:false,autoAmount:0,autoDay:1,lastInterest:today(),lastAuto:today()},
+      {id:uid(),name:"Student Loan Dragon",type:"Student Loan",balance:24000,original:24000,apr:6.75,auto:true,autoAmount:250,autoDay:15,lastInterest:today(),lastAuto:today()}
+    ]
+  };
+}
+function load(){
+  try{state=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){state=null;}
+  if(!state)state=defaultState();
+  if(!Array.isArray(state.debt))state.debt=[];
+  if(!Array.isArray(state.log))state.log=[];
+  applyScheduledAuto();
+  save();
+}
+function render(){
+  document.getElementById("saved").textContent=money(state.saved);
+  document.getElementById("xp").textContent=Math.round(state.xp).toLocaleString();
+  document.getElementById("attacks").textContent=Math.round(state.attacks).toLocaleString();
+
+  var bosses=document.getElementById("bosses");
+  if(!state.debt.length){
+    bosses.innerHTML='<div class="empty">No bosses yet. Tap Add Boss.</div>';
+  }else{
+    bosses.innerHTML=state.debt.map(function(d){
+      var pct=d.original>0?Math.max(0,Math.min(100,d.balance/d.original*100)):0;
+      var dead=d.balance<=0;
+      return '<div class="boss">'+
+        '<div class="head"><div class="dragon">🐉</div><div><div class="name">'+escapeHtml(d.name)+'</div><div class="type">'+escapeHtml(d.type)+' · '+Number(d.apr).toFixed(2)+'% APR</div></div></div>'+
+        '<div class="hp"><span>'+(dead?"DEFEATED":"Boss HP")+'</span><span>'+money(d.balance)+'</span></div>'+
+        '<div class="bar"><div class="fill" style="width:'+pct+'%"></div></div>'+
+        '<div class="meta"><span>Original: '+money(d.original)+'</span><span>Auto: '+(d.auto?"On · "+money(d.autoAmount)+" day "+d.autoDay:"Off")+'</span></div>'+
+        '<div class="actions">'+
+        (dead?"":'<button class="attack" data-action="100" data-id="'+d.id+'">Attack $100</button><button class="attack" data-action="500" data-id="'+d.id+'">Attack $500</button><button class="attack" data-action="custom" data-id="'+d.id+'">Custom Attack</button>')+
+        (d.auto&&!dead?'<button class="auto" data-auto="'+d.id+'">Record Auto Attack</button>':"")+
+        '<button data-edit="'+d.id+'">Edit Boss</button></div></div>';
+    }).join("");
+  }
+
+  var log=document.getElementById("log");
+  log.innerHTML=state.log.length?state.log.map(function(x){
+    return '<div class="entry"><span><b>'+escapeHtml(x.text)+'</b><br><small>'+escapeHtml(x.date)+'</small></span><span class="'+escapeHtml(x.kind)+'">'+escapeHtml(x.amount)+'</span></div>';
+  }).join(""):'<div class="empty">No battles yet.</div>';
+}
+function attack(d,amount,label){
+  amount=Math.max(0,Math.min(Number(amount)||0,d.balance));
+  if(!amount)return;
+  d.balance-=amount;
+  state.attacks++;
+  addLog(label+" hit "+d.name,"−"+money(amount),"damage");
+  save();render();
+}
+function showModal(d){
+  editingId=d?d.id:null;
+  var x=d||{name:"New Dragon",type:"Credit Card",balance:1000,original:1000,apr:24.99,auto:false,autoAmount:0,autoDay:1};
+  document.getElementById("modalTitle").textContent=d?"Edit Boss":"Add Boss";
+  document.getElementById("name").value=x.name;
+  document.getElementById("type").value=x.type;
+  document.getElementById("apr").value=x.apr;
+  document.getElementById("balance").value=x.balance;
+  document.getElementById("original").value=x.original;
+  document.getElementById("auto").checked=!!x.auto;
+  document.getElementById("autoAmount").value=x.autoAmount;
+  document.getElementById("autoDay").value=x.autoDay;
+  document.getElementById("deleteBoss").style.display=d?"inline-block":"none";
+  document.getElementById("modal").style.display="flex";
+}
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+  editingId=null;
+}
+function daysSince(a,b){
+  var aa=new Date(a+"T00:00:00");
+  var bb=new Date(b+"T00:00:00");
+  return Math.floor((bb-aa)/86400000);
+}
+function applyInterest(){
+  var now=today();
+  state.debt.forEach(function(d){
+    if(!d.lastInterest)d.lastInterest=now;
+    var days=daysSince(d.lastInterest,now);
+    if(days>0&&d.balance>0&&d.apr>0){
+      var interest=d.balance*(d.apr/100)*days/365;
+      d.balance+=interest;
+      addLog("Estimated interest on "+d.name,"+"+money(interest),"damage");
+    }
+    d.lastInterest=now;
+  });
+}
+function applyScheduledAuto(){
+  var now=new Date();
+  state.debt.forEach(function(d){
+    if(!d.auto||d.autoAmount<=0||d.balance<=0)return;
+    if(!d.lastAuto){d.lastAuto=today();return;}
+    var last=new Date(d.lastAuto+"T00:00:00");
+    var guard=0;
+    while(guard++<36){
+      var y=last.getFullYear(),m=last.getMonth()+1;
+      if(m>11){m=0;y++;}
+      var lastDay=new Date(y,m+1,0).getDate();
+      var day=Math.min(Number(d.autoDay)||1,lastDay);
+      var due=new Date(y,m,day);
+      if(due>now)break;
+      var amount=Math.min(Number(d.autoAmount)||0,d.balance);
+      if(amount>0){
+        d.balance-=amount;
+        state.attacks++;
+        addLog("AUTO ATTACK hit "+d.name,"−"+money(amount),"damage");
+      }
+      d.lastAuto=due.getFullYear()+"-"+String(due.getMonth()+1).padStart(2,"0")+"-"+String(due.getDate()).padStart(2,"0");
+      last=due;
+      if(d.balance<=0)break;
+    }
+  });
+}
+
+document.getElementById("addBoss").addEventListener("click",function(){showModal(null);});
+document.getElementById("cancel").addEventListener("click",closeModal);
+
+document.getElementById("deleteBoss").addEventListener("click",function(){
+  if(!editingId)return;
+  state.debt=state.debt.filter(function(d){return d.id!==editingId;});
+  closeModal();save();render();
+});
+
+document.getElementById("bossForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var bal=Math.max(0,Number(document.getElementById("balance").value)||0);
+  var orig=Math.max(0.01,Number(document.getElementById("original").value)||bal||0.01);
+  var obj={
+    id:editingId||uid(),
+    name:document.getElementById("name").value.trim()||"Dragon",
+    type:document.getElementById("type").value,
+    apr:Math.max(0,Number(document.getElementById("apr").value)||0),
+    balance:bal,
+    original:orig,
+    auto:document.getElementById("auto").checked,
+    autoAmount:Math.max(0,Number(document.getElementById("autoAmount").value)||0),
+    autoDay:Math.max(1,Math.min(31,Math.floor(Number(document.getElementById("autoDay").value)||1))),
+    lastInterest:today()
+  };
+  if(editingId){
+    var old=state.debt.find(function(d){return d.id===editingId;});
+    if(old){obj.lastAuto=old.lastAuto||today();}
+    state.debt=state.debt.map(function(d){return d.id===editingId?obj:d;});
+  }else{
+    obj.lastAuto=today();
+    state.debt.push(obj);
+  }
+  closeModal();save();render();
+});
+
+document.addEventListener("click",function(e){
+  var b=e.target.closest("button");
+  if(!b)return;
+
+  if(b.dataset.edit){
+    var d=state.debt.find(function(x){return x.id===b.dataset.edit;});
+    if(d)showModal(d);
+    return;
+  }
+
+  if(b.dataset.action){
+    var d2=state.debt.find(function(x){return x.id===b.dataset.id;});
+    if(!d2)return;
+    var amount=b.dataset.action==="custom"?prompt("How much did you pay?","250"):b.dataset.action;
+    if(amount!==null)attack(d2,amount,"Payment");
+    return;
+  }
+
+  if(b.dataset.auto){
+    var d3=state.debt.find(function(x){return x.id===b.dataset.auto;});
+    if(d3)attack(d3,d3.autoAmount,"AUTO ATTACK");
+    return;
+  }
+
+  if(b.dataset.win){
+    var wins={wendys:["Skipped Wendy's",150],cook:["Cooked at home",200],avoid:["Skipped an unnecessary purchase",100],budget:["Stayed under budget",250]};
+    var w=wins[b.dataset.win];
+    state.xp+=w[1];
+    addLog(w[0],"+"+w[1]+" XP","xp");
+    save();render();
+    return;
+  }
+
+  if(b.id==="customWin"){
+    var text=prompt("What did you do?");
+    if(!text)return;
+    var saved=Number(prompt("Money kept?","0"))||0;
+    var xp=Number(prompt("XP earned?","100"))||0;
+    state.saved+=Math.max(0,saved);
+    state.xp+=Math.max(0,xp);
+    addLog(text,(saved?"+ "+money(saved)+" · ":"")+"+"+xp+" XP","xp");
+    save();render();
+  }
+});
+
+load();
+applyInterest();
+render();
+save();
+})();
 </script>
-</body></html>
+</body>
+</html>
